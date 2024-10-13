@@ -38,7 +38,30 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-    // write your solution here
+    // Split the expression into chunks of 10
+    const chunks = expr.match(/.{1,10}/g);
+    let decodedMessage = '';
+
+    chunks.forEach(chunk => {
+        if (chunk === '**********') {
+            decodedMessage += ' '; // Add space for Morse space
+        } else {
+            let morseLetter = '';
+
+            for (let i = 0; i < chunk.length; i += 2) {
+                const bits = chunk.slice(i, i + 2);
+                if (bits === '10') {
+                    morseLetter += '.'; // Dot
+                } else if (bits === '11') {
+                    morseLetter += '-'; // Dash
+                }
+            }
+            
+            decodedMessage += MORSE_TABLE[morseLetter] || ''; // Add decoded letter
+        }
+    });
+
+    return decodedMessage;
 }
 
 module.exports = {
